@@ -1,6 +1,8 @@
 <?php
 
+use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FingerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', FingerController::class, 'index');
 
 route::get('/about', function () {
-    dd('terserah');
+    $device = new ZKTeco('192.168.1.5', 4370);
+
+        $device->connect();
+
+        $data = $device->getAttendance();
+        
+        dd($data);
 });
