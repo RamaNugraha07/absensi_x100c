@@ -2,7 +2,6 @@
 
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FingerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +14,9 @@ use App\Http\Controllers\FingerController;
 |
 */
 
-// Route::get('/', FingerController::class, 'index');
 
-route::get('/about', function () {
-    $device = new ZKTeco('192.168.1.5', 4370);
-
-        $device->connect();
-
-        $data = $device->getAttendance();
-        
-        dd($data);
+route::get('/', function () {
+    $data = new ZKTeco('192.168.1.56',4370);
+    $data->connect();
+    dd($data->getUser());
 });
