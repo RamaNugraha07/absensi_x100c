@@ -9,7 +9,7 @@ class FingerController extends Controller
 {
     public function index()
     {
-        $device = new ZKTeco('192.168.1.5', 4370);
+        $device = new ZKTeco('192.168.1.56', 4370);
 
         $device->connect();
 
