@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class KaryawanController extends Controller
 {
@@ -30,7 +31,11 @@ class KaryawanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            return Karyawan::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return false;
+        }
     }
 
     /**

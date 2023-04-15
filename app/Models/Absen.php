@@ -20,6 +20,10 @@ class Absen extends Model
         'jam_pulang',
         'tgl_tarik_data',
     ];
+    protected $cast = 
+    [
+        'id_karyawan' => 'integer',
+    ];
 
     public function karyawan(): BelongsTo
     {

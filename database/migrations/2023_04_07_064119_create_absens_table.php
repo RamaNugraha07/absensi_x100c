@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_karyawan');
             $table->date('tanggal');
-            $table->time('jam_masuk');
+            $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();
-            $table->datetime('tgl_tarik_data');
+            $table->timestamp('tgl_tarik_data');
             $table->timestamps();
             $table->foreign('id_karyawan')->references('id')->on('karyawans');
         });

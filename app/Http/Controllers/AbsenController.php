@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absen;
-use Illuminate\Http\Request;
+use App\Models\Karyawan;
+use Illuminate\Support\Carbon;
+
 
 class AbsenController extends Controller
 {
@@ -13,6 +15,8 @@ class AbsenController extends Controller
     public function index()
     {
         //
+        // dd(Session::get('data'));
+        // return Absen::all();
     }
 
     /**
@@ -20,15 +24,61 @@ class AbsenController extends Controller
      */
     public function create()
     {
-        $data = Absen::create(request()-> toArray());
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function getAttendances()
     {
-        //
+
+    }
+
+    public function check() {
+        
+    }
+    public function datang($request)
+    {
+        $karyawan = new Karyawan();
+        $karyawan = $karyawan->show($request['id']);
+        if (!$karyawan) 
+            return 'data pengguna tidak ditemukan';
+
+        $timestamp = Carbon::parse($request['timestamp']);
+        $data = Absen::where('id_karyawan', $request['id'])
+                    ->where('tanggal', $timestamp->format('Y-m-d'))
+                    ->first();
+                    
+        if($data == null) {
+            $hasil = Absen::create([
+                        'id_karyawan' => $request['id'],
+                        'tanggal' => $timestamp->format('Y-m-d'),
+                        'jam_masuk' => $timestamp->format('h:i:s'),
+                        'tanggal_tarik_data' => Carbon::now(),
+                    ]);
+            return $hasil?true:false;
+        }
+        return true;
+
+    }
+
+    public function pulang($request)
+    {
+        $timestamp = Carbon::parse($request['timestamp']);
+        $data = Absen::where('id_karyawan', $request['id'])
+                    ->where('tanggal', $timestamp->format('Y-m-d'))
+                    ->first();
+        if($data == null) {
+            $hasil = Absen::create([
+                        'id_karyawan' => $request['id'],
+                        'tanggal' => $timestamp->format('Y-m-d'),
+                        'jam_pulang' => $timestamp->format('h:i:s'),
+                        'tanggal_tarik_data' => Carbon::now(),
+                    ]);
+        } else {
+            $hasil = Absen::where('id_karyawan', $request['id'])
+                        ->where('tanggal', $timestamp->format('Y-m-d'))
+                        ->update(['jam_pulang' => $timestamp->format('h:i:s')]);
+        }
+        return $hasil;
     }
 
     /**
@@ -37,6 +87,7 @@ class AbsenController extends Controller
     public function show(string $id)
     {
         //
+        
     }
 
     /**
@@ -50,7 +101,7 @@ class AbsenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(array $request)
     {
         //
     }

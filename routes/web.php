@@ -1,7 +1,10 @@
 <?php
 
 use Rats\Zkteco\Lib\ZKTeco;
+use Rats\Zkteco\Lib\Helper\Device;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\DeviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-route::get('/', function () {
-    $data = new ZKTeco('192.168.1.56',4370);
-    $data->connect();
-    dd($data->getUser());
-});
+route::get('/', [DeviceController::class, 'getAttendances']);
+Route::resource('absen', AbsenController::class)->except('store','update');
+route::post('/absen', [AbsenController::class, 'store']);
